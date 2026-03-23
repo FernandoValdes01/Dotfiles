@@ -1,0 +1,107 @@
+@import "../omarchy/current/theme/waybar.css";
+
+/* -----------------------------------------------------
+   Variables de color (sobrescriben el theme de Omarchy)
+----------------------------------------------------- */
+
+@define-color foreground #d0d0d0;
+@define-color foreground-dim #a8a8a8;
+@define-color background rgba(0, 0, 0, 0);
+
+/* -----------------------------------------------------
+   Configuración global
+----------------------------------------------------- */
+
+* {
+  background-color: transparent;
+  color: @foreground;
+
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+
+  font-family: "Monocraft";
+  font-size: 12px;
+}
+
+/* -----------------------------------------------------
+   Márgenes de módulos
+----------------------------------------------------- */
+
+.modules-left {
+  margin-left: 8px;
+}
+
+.modules-right {
+  margin-right: 8px;
+}
+
+/* -----------------------------------------------------
+   Workspaces
+----------------------------------------------------- */
+
+#workspaces button {
+  all: initial;
+
+  padding: 0 6px;
+  margin: 0 1.5px;
+  min-width: 9px;
+
+  color: @foreground;
+  font-family: "Monocraft";
+  font-size: 12px;
+}
+
+#workspaces button.empty {
+  opacity: 0.5;
+  color: @foreground-dim;
+}
+
+#workspaces button.active {
+  color: @foreground;
+}
+
+#workspaces button:hover {
+  color: #ffffff;
+}
+
+/* -----------------------------------------------------
+   Módulos del sistema
+----------------------------------------------------- */
+
+#cpu,
+#battery,
+#pulseaudio,
+#custom-omarchy,
+#network,
+#clock,
+#tray,
+#memory,
+#temperature,
+#backlight {
+  color: @foreground;
+  padding: 0 6px;
+}
+
+/* -----------------------------------------------------
+   Tray icons
+----------------------------------------------------- */
+
+#tray {
+  padding: 0 6px;
+}
+
+/* -----------------------------------------------------
+   Tooltip
+----------------------------------------------------- */
+
+tooltip {
+  background: rgba(20, 20, 20, 0.95);
+  border-radius: 6px;
+  border: 1px solid rgba(80, 80, 80, 0.3);
+}
+
+tooltip label {
+  color: #d0d0d0;
+  font-family: "Monocraft";
+}

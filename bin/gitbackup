@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+set -e
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null || echo "")
+if [[ -z "$ROOT" ]]; then
+    echo "❌ No estás en un repositorio Git."
+    exit 1
+fi
+
+REPO=$(basename "$ROOT")
+STATE_DIR="$HOME/git_states/$REPO"
+
+if [[ ! -d "$STATE_DIR" ]]; then
+    echo "❌ No hay backups guardados para este repositorio."
+    exit 2
+fi
+
+echo "🧹 Limpiando backups corruptos..."
+for F in "$STATE_DIR"/*.tar.gz; do
+    if [[ -f "$F" && ! -s "$F" ]]; then
+        echo "   🗑 Eliminando $(basename "$F")"
+        rm -f "$F"
+    fi
+done
+
+echo "📦 Backups disponibles (ordenados por fecha):"
+FILES=($(ls -1t "$STATE_DIR"/*.tar.gz 2>/dev/null))
+
+if [[ ${#FILES[@]} -eq 0 ]]; then
+    echo "❌ No quedaron backups funcionales."
+    exit 3
+fi
+
+nl <<< "$(basename -a "${FILES[@]}")"
+echo
+
+read -p "👉 Selecciona el número del backup a restaurar: " CHOICE
+
+INDEX=$((CHOICE - 1))
+FILE="${FILES[$INDEX]}"
+
+if [[ ! -f "$FILE" ]]; then
+    echo "❌ Selección inválida."
+    exit 4
+fi
+
+echo "⚠ Se va a restaurar el backup:"
+echo "   $(basename "$FILE")"
+read -p "Confirmar restauración? (y/n): " CONFIRM
+
+if [[ "$CONFIRM" != "y" ]]; then
+    echo "❌ Cancelado."
+    exit 5
+fi
+
+echo "🗑 Eliminando .git actual..."
+rm -rf "$ROOT/.git"
+
+echo "🔄 Restaurando backup..."
+tar -xzf "$FILE" -C "$ROOT"
+
+echo "✔ Restauración completada."
+echo "✔ Ejecuta: git status"

@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+SEARCH_DIR="$HOME/Documents/Github"
+BACKUP_DIR="$HOME/git_states"
+DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+
+echo "🔍 Buscando repositorios Git en: $SEARCH_DIR"
+
+# Buscar repos sin romper la sintaxis
+REPOS=$(find "$SEARCH_DIR" -maxdepth 3 -type d -name .git 2>/dev/null)
+
+mkdir -p "$BACKUP_DIR"
+
+for GITDIR in $REPOS; do
+    ROOT=$(dirname "$GITDIR")
+    REPO=$(basename "$ROOT")
+    TARGET="$BACKUP_DIR/$REPO"
+
+    mkdir -p "$TARGET"
+
+    echo "📁 Repo encontrado: $REPO"
+
+    # Eliminar backups corruptos (tamaño 0)
+    for F in "$TARGET"/*.tar.gz; do
+        if [ -f "$F" ] && [ ! -s "$F" ]; then
+            echo "   🗑 Eliminando backup vacío: $(basename "$F")"
+            rm -f "$F"
+        fi
+    done
+
+    OUT="$TARGET/gitstate_$DATE.tar.gz"
+
+    echo "   📦 Guardando estado..."
+    tar -czf "$OUT" -C "$ROOT" .git
+
+    # Verificar que el backup quedó bien
+    if [ ! -s "$OUT" ]; then
+        echo "   ❌ Backup generado está vacío. Eliminando..."
+        rm -f "$OUT"
+        continue
+    fi
+
+    echo "   ✔ Backup guardado: $(basename "$OUT")"
+done
+
+echo "✨ gitsafe finalizado correctamente."

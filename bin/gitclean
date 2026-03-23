@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -e
+
+BACKUP_DIR="$HOME/git_states"
+
+if [[ ! -d "$BACKUP_DIR" ]]; then
+    echo "❌ No existe la carpeta ~/git_states. No hay nada que limpiar."
+    exit 1
+fi
+
+echo "🧹 Limpiando backups antiguos..."
+
+for REPO_DIR in "$BACKUP_DIR"/*/; do
+    [[ -d "$REPO_DIR" ]] || continue
+
+    echo "📁 Repo: $(basename "$REPO_DIR")"
+
+    FILES=($(ls -1t "$REPO_DIR"/gitstate_*.tar.gz 2>/dev/null))
+
+    # Si no hay backups o solo hay uno → nada que limpiar
+    if [[ ${#FILES[@]} -le 1 ]]; then
+        echo "   ✔ Nada que borrar."
+        echo
+        continue
+    fi
+
+    # Mantener solo el primero (más nuevo)
+    LATEST="${FILES[0]}"
+    echo "   ✔ Manteniendo: $(basename "$LATEST")"
+
+    # Borrar todos los demás
+    for OLD in "${FILES[@]:1}"; do
+        echo "   🗑 Borrando: $(basename "$OLD")"
+        rm -f "$OLD"
+    done
+
+    echo
+done
+
+echo "✨ gitclean completado."

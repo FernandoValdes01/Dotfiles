@@ -1,0 +1,17 @@
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+.env
+.env.*
+*.secret
+*.secrets
+*.key
+*.pem
+*.p12
+*.sqlite
+*.db
+*.cache

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+CARD=2
+
+# esperar que pipewire esté listo
+sleep 2
+
+# arreglar pipewire
+wpctl set-mute @DEFAULT_AUDIO_SINK@ 0 2>/dev/null
+wpctl set-volume @DEFAULT_AUDIO_SINK@ 1.0 2>/dev/null
+
+# arreglar ALSA en la tarjeta correcta
+amixer -c $CARD set Master 100% unmute >/dev/null 2>&1
+amixer -c $CARD set Headphone 100% unmute >/dev/null 2>&1
+amixer -c $CARD set Speaker 100% unmute >/dev/null 2>&1
+amixer -c $CARD set PCM 100% unmute >/dev/null 2>&1
+
+# desactivar auto-mute
+amixer -c $CARD set "Auto-Mute Mode" Disabled >/dev/null 2>&1
+
+exit 0
