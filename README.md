@@ -186,12 +186,3 @@ Si quiero incorporar un archivo nuevo a este repo, mi criterio es este:
 5. Reemplazo la ruta original por un symlink.
 6. Corro `./sync-status.sh`.
 
-## Filosofía práctica
-
-Si alguien lee estos dotfiles, me gustaría que entienda tres cosas rápidamente:
-
-- qué parte de mi entorno es una preferencia personal
-- qué parte puede copiar casi tal cual
-- qué parte debe adaptar a su máquina antes de usarla
-
-No busco que este repo sea enorme; busco que sea claro. Prefiero pocos archivos, bien elegidos, con una intención técnica evidente.
