@@ -1,107 +1,207 @@
 @import "../omarchy/current/theme/waybar.css";
 
-/* -----------------------------------------------------
-   Variables de color (sobrescriben el theme de Omarchy)
------------------------------------------------------ */
+/* Keep Omarchy theme import, then layer a softer glass treatment on top.
+   Waybar/GTK blur support is limited, so this uses translucent fills, borders,
+   and shadows to simulate a light glass capsule look without breaking themes. */
 
 @define-color foreground #d0d0d0;
-@define-color foreground-dim #a8a8a8;
+@define-color foreground-dim #9fa4ad;
 @define-color background rgba(0, 0, 0, 0);
+@define-color pill-bg rgba(18, 20, 28, 0.42);
+@define-color pill-bg-strong rgba(28, 31, 40, 0.62);
+@define-color pill-border rgba(255, 255, 255, 0.10);
+@define-color pill-border-strong rgba(255, 255, 255, 0.16);
+@define-color pill-shadow rgba(0, 0, 0, 0.28);
+@define-color status-soft #d8b48a;
+@define-color status-alert #d6a1a1;
 
-/* -----------------------------------------------------
-   Configuración global
------------------------------------------------------ */
+window#waybar {
+  background: transparent;
+  color: @foreground;
+}
 
 * {
   background-color: transparent;
   color: @foreground;
-
   border: none;
   border-radius: 0;
   min-height: 0;
-
   font-family: "Monocraft";
   font-size: 12px;
 }
 
-/* -----------------------------------------------------
-   Márgenes de módulos
------------------------------------------------------ */
-
 .modules-left {
-  margin-left: 8px;
+  margin-left: 12px;
+}
+
+.modules-center {
+  margin-top: 2px;
 }
 
 .modules-right {
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
-/* -----------------------------------------------------
-   Workspaces
------------------------------------------------------ */
+#workspaces,
+#custom-omarchy,
+#custom-spotify,
+#clock,
+#custom-update,
+#custom-voxtype,
+#custom-screenrecording-indicator,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator,
+#group-tray-expander,
+#bluetooth,
+#network,
+#pulseaudio,
+#cpu,
+#battery {
+  margin: 6px 4px 0;
+  min-height: 32px;
+  padding: 0 15px;
+  background: @pill-bg;
+  border: 1px solid @pill-border;
+  border-radius: 16px;
+  box-shadow:
+    0 10px 22px -18px @pill-shadow,
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+#custom-omarchy {
+  padding: 0 13px 0 12px;
+  font-size: 13px;
+}
+
+#custom-spotify {
+  min-width: 14px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+#clock,
+#network,
+#pulseaudio,
+#cpu,
+#battery {
+  padding: 0 16px;
+}
+
+#custom-update,
+#custom-voxtype,
+#custom-screenrecording-indicator,
+#custom-idle-indicator,
+#custom-notification-silencing-indicator {
+  min-width: 14px;
+  padding: 0 11px;
+  font-size: 11px;
+}
+
+#group-tray-expander {
+  padding: 0 12px;
+}
+
+#custom-expand-icon,
+#tray {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  padding: 0;
+}
+
+#custom-expand-icon {
+  color: @foreground-dim;
+  padding-right: 10px;
+}
+
+#tray {
+  padding-left: 2px;
+}
+
+#tray menu {
+  padding: 6px;
+}
+
+#workspaces {
+  padding: 4px;
+}
 
 #workspaces button {
   all: initial;
-
-  padding: 0 6px;
-  margin: 0 1.5px;
-  min-width: 9px;
-
+  min-width: 20px;
+  min-height: 28px;
+  margin: 0 2px;
+  padding: 0 12px;
+  border-radius: 12px;
   color: @foreground;
   font-family: "Monocraft";
   font-size: 12px;
 }
 
+#workspaces button label {
+  color: @foreground;
+}
+
 #workspaces button.empty {
-  opacity: 0.5;
-  color: @foreground-dim;
+  color: rgba(93, 98, 108, 0.92);
+}
+
+#workspaces button.empty label {
+  color: rgba(93, 98, 108, 0.92);
 }
 
 #workspaces button.active {
-  color: @foreground;
+  color: #ffffff;
+  background: @pill-bg-strong;
+  border: 1px solid @pill-border-strong;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+#workspaces button.active label {
+  color: #ffffff;
 }
 
 #workspaces button:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-/* -----------------------------------------------------
-   Módulos del sistema
------------------------------------------------------ */
-
-#cpu,
-#battery,
-#pulseaudio,
-#custom-omarchy,
-#network,
-#clock,
-#tray,
-#memory,
-#temperature,
-#backlight {
-  color: @foreground;
-  padding: 0 6px;
+#workspaces button:hover label {
+  color: #ffffff;
 }
 
-/* -----------------------------------------------------
-   Tray icons
------------------------------------------------------ */
-
-#tray {
-  padding: 0 6px;
+#network.disconnected,
+#pulseaudio.muted,
+#bluetooth.disabled,
+#bluetooth.off {
+  color: @foreground-dim;
 }
 
-/* -----------------------------------------------------
-   Tooltip
------------------------------------------------------ */
+#battery.warning {
+  color: @status-soft;
+}
+
+#battery.critical,
+#custom-screenrecording-indicator.active,
+#custom-idle-indicator.active,
+#custom-notification-silencing-indicator.active,
+#custom-voxtype.recording {
+  color: @status-alert;
+}
+
+.hidden {
+  opacity: 0;
+}
 
 tooltip {
-  background: rgba(20, 20, 20, 0.95);
-  border-radius: 6px;
-  border: 1px solid rgba(80, 80, 80, 0.3);
+  padding: 6px 8px;
+  background: rgba(16, 18, 24, 0.96);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 tooltip label {
-  color: #d0d0d0;
+  color: @foreground;
   font-family: "Monocraft";
 }

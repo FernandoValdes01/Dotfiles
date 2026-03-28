@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP_BASE="${DOTFILES_BACKUP_ROOT:-$HOME/dotfiles-backups}"
 BACKUP_DIR=""
 FORCE=0
@@ -31,7 +32,7 @@ matches_selector() {
 
   local selector home_rel repo_rel
   home_rel="${original#"$HOME/"}"
-  repo_rel="${repo_path#"$HOME/dotfiles/"}"
+  repo_rel="${repo_path#"$REPO_ROOT/"}"
   for selector in "$@"; do
     if [ "$selector" = "$original" ] || [ "$selector" = "$home_rel" ] || [ "$selector" = "$repo_rel" ]; then
       return 0

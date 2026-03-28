@@ -22,21 +22,33 @@ collect_pairs() {
     while IFS= read -r src; do
       rel="${src#"$REPO_ROOT/config/"}"
       printf '%s\t%s\n' "$src" "$HOME/.config/$rel"
-    done < <(find "$REPO_ROOT/config" \( -type f -o -type l \) | sort)
+    done < <(find "$REPO_ROOT/config" \( -type f -o -type l \) \
+      ! -name '*.bak.*' \
+      ! -name '*.tmp' \
+      ! -name '*.temp' \
+      | sort)
   fi
 
   if [ -d "$REPO_ROOT/local/bin" ]; then
     while IFS= read -r src; do
       rel="${src#"$REPO_ROOT/local/bin/"}"
       printf '%s\t%s\n' "$src" "$HOME/.local/bin/$rel"
-    done < <(find "$REPO_ROOT/local/bin" \( -type f -o -type l \) | sort)
+    done < <(find "$REPO_ROOT/local/bin" \( -type f -o -type l \) \
+      ! -name '*.bak.*' \
+      ! -name '*.tmp' \
+      ! -name '*.temp' \
+      | sort)
   fi
 
   if [ -d "$REPO_ROOT/bin" ]; then
     while IFS= read -r src; do
       rel="${src#"$REPO_ROOT/bin/"}"
       printf '%s\t%s\n' "$src" "$HOME/bin/$rel"
-    done < <(find "$REPO_ROOT/bin" \( -type f -o -type l \) | sort)
+    done < <(find "$REPO_ROOT/bin" \( -type f -o -type l \) \
+      ! -name '*.bak.*' \
+      ! -name '*.tmp' \
+      ! -name '*.temp' \
+      | sort)
   fi
 }
 

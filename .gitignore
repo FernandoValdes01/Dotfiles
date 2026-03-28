@@ -15,3 +15,8 @@
 *.sqlite
 *.db
 *.cache
+
+# Local audit/backups and editor artifacts that should never become managed dotfiles
+backups/
+*.bak.*
+Pasted image*.png
