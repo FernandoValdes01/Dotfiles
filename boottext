@@ -1,0 +1,53 @@
+Paso a paso: Secure Boot en Omarchy + Windows
+Fase 1: Preparación
+Paso 1 — Asegurate de que Secure Boot esté desactivado en la BIOS (ya debería estarlo si tenés Omarchy con Limine).
+Paso 2 — Si Windows no aparece en el menú de Limine, agregalo:
+bashsudo limine-scan
+(Si no existe ese comando, usá sudo limine-entry-tool --scan)
+Fase 2: Crear e instalar las keys
+Paso 3 — Entrá a la BIOS y borrá todas las keys de Secure Boot existentes. Buscá opciones como "Clear Secure Boot Keys", "Delete all Secure Boot Variables" o "Reset to Setup Mode". Esto pone tu sistema en Setup Mode. Guardá y volvé a Omarchy.
+
+Si tenés placa MSI: Tenés que poner Secure Boot Mode en "Custom" para acceder al menú de gestión de keys, y desactivar "Provision Factory Default keys".
+
+Paso 4 — Instalá sbctl:
+bashsudo pacman -S sbctl
+Paso 5 — Verificá que estés en Setup Mode:
+bashsudo sbctl status
+Deberías ver Secure Boot: Disabled y Setup Mode: Enabled (no te preocupes si aparece con una ✗, es normal).
+Paso 6 — Creá tus keys:
+bashsudo sbctl create-keys
+Paso 7 — Enrollá las keys incluyendo las de Microsoft (para que Windows siga funcionando):
+bashsudo sbctl enroll-keys -m
+El flag -m es clave — sin él, Windows no va a bootear.
+Fase 3: Firmar y configurar
+Paso 8 — Editá /etc/mkinitcpio.conf y agregá btrfs-overlayfs al final de la línea HOOKS:
+bashsudo nano /etc/mkinitcpio.conf
+Buscá la línea HOOKS y agregá btrfs-overlayfs al final (antes del paréntesis de cierre).
+Paso 9 — Regenerá el initramfs:
+bashsudo limine-mkinitcpio
+Paso 10 — Verificá qué archivos faltan firmar y firmalos todos:
+bashsudo sbctl verify
+Si ves archivos sin firmar (con ✗), ejecutá este comando para firmarlos automáticamente:
+bashsudo sbctl verify | sed -nE 's|^✗ (/.+) is not signed$|sbctl sign -s "\1"|p' | sudo sh
+Después corré de nuevo sudo limine-mkinitcpio para asegurar que todo quede consistente.
+Fase 4: Activar Secure Boot
+Paso 11 — Reiniciá a la BIOS:
+bashsudo systemctl reboot --firmware-setup
+Paso 12 — En la BIOS: activá Secure Boot y verificá que el modo sea Custom.
+
+Si tenés placa ASUS: Poné OS Type = "Windows UEFI mode" (la opción "Other OS" equivale a desactivado).
+
+Paso 13 — Guardá, salí, y probá bootear tanto Omarchy como Windows.
+Verificación final
+Una vez en Omarchy:
+bashsudo sbctl status
+Deberías ver Secure Boot: Enabled.
+En Windows podés verificar abriendo msinfo32 y buscando "Secure Boot State: On".
+
+Nota sobre BitLocker: si tenés BitLocker activado en Windows, te va a pedir la recovery key la primera vez que bootees después de cambiar las keys de Secure Boot. Esto es normal y solo pasa una vez (o podés desactivar BitLocker si no lo necesitás).
+¿Tenés alguna duda con algún paso específico?
+
+
+
+:#839958 ->moss green 
+:#0D330E ->pakistan green

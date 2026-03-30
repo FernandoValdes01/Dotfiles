@@ -13,6 +13,55 @@ size = 11
 padding.x = 14
 padding.y = 14
 decorations = "None"
+opacity = 0.78
+
+[colors.primary]
+background = "#0b120d"
+foreground = "#839958"
+
+[colors.cursor]
+text = "#08100a"
+cursor = "#a8bc79"
+
+[colors.vi_mode_cursor]
+text = "#08100a"
+cursor = "#d8ca92"
+
+[colors.search.matches]
+foreground = "#08100a"
+background = "#839958"
+
+[colors.search.focused_match]
+foreground = "#08100a"
+background = "#efe0a5"
+
+[colors.footer_bar]
+foreground = "#08100a"
+background = "#839958"
+
+[colors.selection]
+text = "#dbe5c0"
+background = "#27372b"
+
+[colors.normal]
+black = "#101612"
+red = "#c9645a"
+green = "#839958"
+yellow = "#d8ca92"
+blue = "#6d8777"
+magenta = "#9c8d7e"
+cyan = "#7ea390"
+white = "#b9c7a1"
+
+[colors.bright]
+black = "#4b5649"
+red = "#e17d73"
+green = "#a6bc73"
+yellow = "#efe0a5"
+blue = "#8da896"
+magenta = "#baa79b"
+cyan = "#9fc3b0"
+white = "#e2ead0"
 
 [keyboard]
 bindings = [

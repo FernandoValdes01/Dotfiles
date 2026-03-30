@@ -4,16 +4,17 @@
    Waybar/GTK blur support is limited, so this uses translucent fills, borders,
    and shadows to simulate a light glass capsule look without breaking themes. */
 
-@define-color foreground #d0d0d0;
-@define-color foreground-dim #9fa4ad;
+@define-color foreground #839958;
+@define-color foreground-dim #69715f;
+@define-color workspace-empty #5b6058;
 @define-color background rgba(0, 0, 0, 0);
-@define-color pill-bg rgba(18, 20, 28, 0.42);
-@define-color pill-bg-strong rgba(28, 31, 40, 0.62);
-@define-color pill-border rgba(255, 255, 255, 0.10);
-@define-color pill-border-strong rgba(255, 255, 255, 0.16);
-@define-color pill-shadow rgba(0, 0, 0, 0.28);
-@define-color status-soft #d8b48a;
-@define-color status-alert #d6a1a1;
+@define-color pill-bg rgba(10, 16, 11, 0.44);
+@define-color pill-bg-strong rgba(20, 29, 20, 0.72);
+@define-color pill-border rgba(131, 153, 88, 0.15);
+@define-color pill-border-strong rgba(131, 153, 88, 0.32);
+@define-color pill-shadow rgba(0, 0, 0, 0.34);
+@define-color status-soft #d8ca92;
+@define-color status-alert #c9645a;
 
 window#waybar {
   background: transparent;
@@ -144,31 +145,31 @@ window#waybar {
 }
 
 #workspaces button.empty {
-  color: rgba(93, 98, 108, 0.92);
+  color: @workspace-empty;
 }
 
 #workspaces button.empty label {
-  color: rgba(93, 98, 108, 0.92);
+  color: @workspace-empty;
 }
 
 #workspaces button.active {
-  color: #ffffff;
-  background: @pill-bg-strong;
+  color: @foreground;
+  background: rgba(131, 153, 88, 0.14);
   border: 1px solid @pill-border-strong;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 #workspaces button.active label {
-  color: #ffffff;
+  color: @foreground;
 }
 
 #workspaces button:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
+  color: @foreground;
+  background: rgba(131, 153, 88, 0.08);
 }
 
 #workspaces button:hover label {
-  color: #ffffff;
+  color: @foreground;
 }
 
 #network.disconnected,
@@ -196,9 +197,9 @@ window#waybar {
 
 tooltip {
   padding: 6px 8px;
-  background: rgba(16, 18, 24, 0.96);
+  background: rgba(8, 12, 9, 0.96);
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(131, 153, 88, 0.18);
 }
 
 tooltip label {
